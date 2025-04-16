@@ -1,94 +1,78 @@
-import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int[] arr = new int[25];
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Init array:");
-        arr = initArr(arr);
-        printArr(arr);
+        System.out.print("Input first string: ");
+        String str1 = scanner.nextLine();
+        System.out.print("Input second string: ");
+        String str2 = scanner.nextLine();
 
-        System.out.println();
+        System.out.println("\n--- String ---");
+        processString(str1, str2);
 
-        System.out.println("Sorted array:");
-        arr = sort(arr);
-        printArr(arr);
+        System.out.println("\n--- StringBuilder ---");
+        processBuilder(new StringBuilder(str1), new StringBuilder(str2));
 
-        System.out.println();
-        System.out.println("Quantity of positive even numbers: " + calcQuantity(arr));
-        System.out.println("Summary of positive even numbers: " + summaryOfNums(arr));
-
-        System.out.println("Modified array where positive even numbers = 0: ");
-        arr = swapElems(arr);
-        printArr(arr);
-
+        scanner.close();
     }
 
-    /**
-     * Changes positive even numbers of given array to zero
-     * @param arr given array of integer numbers
-     * @return arr where all positive even numbers are swapped to zero
-     */
-    private static int[] swapElems(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] > 0 && arr[i] % 2 == 0) arr[i] = 0;
+    private static void processString(String s1, String s2) {
+        // length
+        System.out.println("Length1: " + s1.length());
+        System.out.println("Length2: " + s2.length());
+
+        // compare
+        System.out.println("equals(): " + s1.equals(s2));
+        System.out.println("compareTo(): " + s1.compareTo(s2));
+        System.out.println("== : " + (s1 == s2));
+
+        // concat
+        System.out.println("Concat: " + s1 + s2);
+
+        // variant 5: count + replace " o"
+        System.out.println("Count ' o': " + countSpaceO(s1));
+        System.out.println("Replace ' o': " + s1.replace(" o", "*"));
+
+        // check second starts with 'a'
+        System.out.println("Second starts with 'a': " + hasWordStartingA(s2));
+    }
+
+    private static void processBuilder(StringBuilder sb1, StringBuilder sb2) {
+        // length
+        System.out.println("Length1: " + sb1.length());
+        System.out.println("Length2: " + sb2.length());
+
+        // compare
+        System.out.println("equals(): " + sb1.toString().equals(sb2.toString()));
+        System.out.println("compareTo(): " + sb1.toString().compareTo(sb2.toString()));
+        System.out.println("== : " + (sb1 == sb2));
+
+        // concat (appends to sb1)
+        System.out.println("Concat: " + sb1.append(sb2).toString());
+
+        // variant 5: count + replace " o"
+        String full1 = sb1.toString();
+        System.out.println("Count ' o': " + countSpaceO(full1));
+        System.out.println("Replace ' o': " + full1.replace(" o", "*"));
+
+        // check second starts with 'a'
+        System.out.println("Second starts with 'a': " + hasWordStartingA(sb2.toString()));
+    }
+
+    private static int countSpaceO(String s) {
+        int c = 0;
+        for (int i = 0; i < s.length() - 1; i++) {
+            if (s.charAt(i) == ' ' && s.charAt(i + 1) == 'o') c++;
         }
-        return arr;
+        return c;
     }
 
-    /**
-     * This method calculates summary of positive even numbers
-     * @param arr given array of int numbers
-     * @return summary of positive even numbers
-     */
-    private static int summaryOfNums(int[] arr) {
-        int sum = 0;
-        for (int el : arr) {
-            if (el > 0 && el % 2 == 0) sum += el;
+    private static boolean hasWordStartingA(String s) {
+        for (String w : s.split("\\s+")) {
+            if (w.startsWith("a")) return true;
         }
-        return sum;
+        return false;
     }
-
-    /**
-     * This method calculates quantity of positive even numbers
-     * @param arr given array of int numbers
-     * @return quantity of positive even numbers
-     */
-    private static int calcQuantity(int[] arr) {
-        int counter = 0;
-        for (int el : arr) {
-            if (el > 0 && el % 2 == 0) counter++;
-        }
-        return counter;
-    }
-
-    /**
-     * This method sorts given array in ascending order
-     * @param arr given array of integer numbers
-     * @return sorted in ascending order array
-     */
-    private static int[] sort(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            for (int j = 0; j < arr.length - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
-            }
-        }
-        return arr;
-    }
-
-    private static int[] initArr(int[] arr) {
-        Random random = new Random();
-        for (int i = 0; i < arr.length; i++) arr[i] = random.nextInt(-20, 30);
-        return arr;
-    }
-
-    private static void printArr(int[] arr) {
-        for (int el : arr) System.out.print(" " + el);
-        System.out.println();
-    }
-
 }
